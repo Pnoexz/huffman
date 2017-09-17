@@ -57,17 +57,6 @@ class TreeTest extends TestCase
         $this->assertSame($expected, $cleanText);
     }
 
-    public function testSplitStringIntoAsciiArray()
-    {
-        $text = 'nam verutis';
-        $expected = [110, 97, 109, 32, 118, 101, 114, 117, 116, 105, 115];
-
-        $cleanText = $this->getTree()->splitStringIntoAsciiArray($text);
-
-        $this->assertInternalType('array', $cleanText);
-        $this->assertSame($expected, $cleanText);
-    }
-
     public function testFrequencyTable()
     {
         $text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis'.
@@ -79,7 +68,12 @@ class TreeTest extends TestCase
             ' Interdum et malesuada fames ac ante ipsum primis in faucibus. Mo'.
             'rbi et orci pellentesque, posuere dui viverra, hendrerit nisl.';
 
-        $table = $this->getTree()->generateFrequencyTable($text);
+        $countSpaces = substr_count($text, ' ');
+
+        $tree = $this->getTree();
+
+        $table = $tree->generateFrequencyTable($text);
         $this->assertInternalType('array', $table);
+        $this->assertSame($countSpaces, $table[32]); // 32 is space in ASCII
     }
 }

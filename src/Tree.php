@@ -22,30 +22,11 @@ class Tree
     }
 
     /**
-     * Splits a string into an array but using the respective ASCII character as
-     * value. This is done to prevent using an invalid character as key further
-     * down the line.
-     *
-     * @param string $text
-     * @return array
-     */
-    public function splitStringIntoAsciiArray(string $text): array
-    {
-        $array = [];
-        foreach (str_split($text) as $character) {
-            $array[] = ord($character);
-        }
-
-        return $array;
-    }
-
-    /**
      * @param string $text
      * @return array
      */
     public function generateFrequencyTable(string $text) :array
     {
-
-        return [];
+        return count_chars($text, 1);
     }
 }
