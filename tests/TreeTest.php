@@ -57,6 +57,17 @@ class TreeTest extends TestCase
         $this->assertSame($expected, $cleanText);
     }
 
+    public function testSplitStringIntoAsciiArray()
+    {
+        $text = 'nam verutis';
+        $expected = [110, 97, 109, 32, 118, 101, 114, 117, 116, 105, 115];
+
+        $cleanText = $this->getTree()->splitStringIntoAsciiArray($text);
+
+        $this->assertInternalType('array', $cleanText);
+        $this->assertSame($expected, $cleanText);
+    }
+
     public function testFrequencyTable()
     {
         $text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis'.
