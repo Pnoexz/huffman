@@ -59,7 +59,7 @@ class TreeTest extends TestCase
 
     public function testFrequencyTable()
     {
-        $text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis'.
+        $text = 'Xorem ipsum dolor sit amet, consectetur adipiscing elit. Duis'.
             ' a dictum mauris. Vivamus ut nulla tristique, sodales leo at, rut'.
             'rum sem. Curabitur mollis ultricies nibh, at mollis tortor sollic'.
             'itudin sit amet. Sed interdum enim in imperdiet interdum. Donec u'.
@@ -68,12 +68,28 @@ class TreeTest extends TestCase
             ' Interdum et malesuada fames ac ante ipsum primis in faucibus. Mo'.
             'rbi et orci pellentesque, posuere dui viverra, hendrerit nisl.';
 
-        $countSpaces = substr_count($text, ' ');
-
         $tree = $this->getTree();
+        $text = $tree->cleanText($text);
+        // Space is the most frequent character in this (and most) text
+        $countSpaces = substr_count($text, ' ');
+        $spaceCharacterInAscii = 32; // Added for legibility
 
-        $table = $tree->generateFrequencyTable($text);
+        $table = $tree->generateOrderedFrequencyTable($text);
         $this->assertInternalType('array', $table);
-        $this->assertSame($countSpaces, $table[32]); // 32 is space in ASCII
+        $this->assertSame($countSpaces, $table[$spaceCharacterInAscii]);
+
+        reset($table);
+        $previousFrequency = current($table);
+        $previousCharacterInAscii = key($table);
+        foreach ($table as $characterInAscii => $frequency) {
+            if ($previousFrequency < $frequency) {
+                $this->fail("Character " . chr($previousCharacterInAscii) .
+                    " occurs $previousFrequency times but appears before " .
+                    chr($characterInAscii) . " which occurs $frequency times"
+                );
+            }
+            $previousFrequency = $frequency;
+            $previousCharacterInAscii = $characterInAscii;
+        }
     }
 }

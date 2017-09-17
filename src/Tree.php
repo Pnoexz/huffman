@@ -25,8 +25,11 @@ class Tree
      * @param string $text
      * @return array
      */
-    public function generateFrequencyTable(string $text) :array
+    public function generateOrderedFrequencyTable(string $text) :array
     {
-        return count_chars($text, 1);
+        $asciiTable = count_chars($text, 1);
+        arsort($asciiTable, SORT_NUMERIC);
+
+        return $asciiTable;
     }
 }
