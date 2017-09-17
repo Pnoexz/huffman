@@ -14,7 +14,11 @@ class Tree
      */
     public function cleanText(string $text): string
     {
-        return $text;
+        $onlyAlphanum = preg_replace('#\W|_#', ' ', $text);
+        $noDoubleSpaces = preg_replace('#\s+#', ' ', $onlyAlphanum);
+        $cleanText = strtolower($noDoubleSpaces);
+
+        return $cleanText;
     }
 
     /**

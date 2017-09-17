@@ -25,16 +25,36 @@ class TreeTest extends TestCase
         $this->assertInstanceOf('Pnoexz\Tree', $tree);
     }
 
-    public function testCleanTest()
+    public function testCleanTestOnlyAlphanum()
     {
-        $text = 'dDLZRG=D/~zcc34Dp\S~KJQ"JE]jCb*Bf>f(w/\'[%(MR8P@s~7=V*bf/%y^b'.
-            'f{]E9fAXh\'gXYJ5PA\~CDh!K)F>+@v@f}x[^!nXk?5YTzn&u;`s3!f]fWK3^>",_'.
-            ';*sfVr`B@>G,D8V=PkNem\7Z_P^j&)?3rAh,"[L:qnMuDU_J6N&]D~y9nz@Ct8AT5'.
-            '-7w3BW\.VES;z5JYyLX]8h>8/EU_4}N{(yVT:>ZZ#>#W,Y.XNfD56(JHZ)*p->@[&';
+        $text = 'deioun=d/~zcc34dp\s~kjq"je]jcb*bf>f(w/\'[%(mr8p@s~7=v*bf/%y^b';
+        $expected = 'deioun d zcc34dp s kjq je jcb bf f w mr8p s 7 v bf y b';
+        $cleanText = $this->getTree()->cleanText($text);
+
+        $this->assertInternalType('string', $cleanText);
+        $this->assertSame($expected, $cleanText);
+    }
+
+    public function testCleanTestNoDoubleSpaces()
+    {
+        $text = "cleaning  double\t\nspaces\r\n\nis \rfun";
+        $expected = 'cleaning double spaces is fun';
 
         $cleanText = $this->getTree()->cleanText($text);
 
         $this->assertInternalType('string', $cleanText);
+        $this->assertSame($expected, $cleanText);
+    }
+
+    public function testCleanTestLowercase()
+    {
+        $text = "THIS sentence SHOUld Be LowerCase";
+        $expected = 'this sentence should be lowercase';
+
+        $cleanText = $this->getTree()->cleanText($text);
+
+        $this->assertInternalType('string', $cleanText);
+        $this->assertSame($expected, $cleanText);
     }
 
     public function testFrequencyTable()
